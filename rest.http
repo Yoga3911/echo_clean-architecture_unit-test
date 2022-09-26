@@ -1,0 +1,57 @@
+### GET ALL USERS
+GET http://localhost:8000/users
+
+### GET USER
+GET http://localhost:8000/users/5
+
+### INSERT USER
+POST http://localhost:8000/users
+Content-Type: application/json
+
+{
+    "name": "Mamat",
+    "email": "mamat@gmail.com",
+    "password": "123456"
+}
+
+### DELETE USER
+DELETE  http://localhost:8000/users/6
+
+### PUT USER
+PUT http://localhost:8000/users/5
+Content-Type: application/json
+
+{
+    "name": "234",
+    "email": "m@gmail.com",
+    "password": "1234"
+}
+
+### GET ALL BOOKS
+GET http://localhost:8000/books
+
+### GET BOOK
+GET http://localhost:8000/books/2
+
+### INSERT BOOK
+POST http://localhost:8000/books
+Content-Type: application/json
+
+{
+    "title": "Bat Man",
+    "author": "Jack Spar",
+    "description": "Buku Bat man"
+}
+
+### DELETE BOOK
+DELETE  http://localhost:8000/books/3
+
+### PUT BOOK
+PUT http://localhost:8000/books/2
+Content-Type: application/json
+
+{
+    "title": "Aqua Man",
+    "author": "Peri",
+    "description": "Sang Raja lautan"
+}
