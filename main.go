@@ -1,12 +1,10 @@
 package main
 
 import (
-	"day-13-orm/configs"
 	"day-13-orm/routes"
 )
 
 func main() {
-	configs.Init()
 
 	e := routes.New()
 

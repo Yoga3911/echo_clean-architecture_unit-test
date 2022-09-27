@@ -1,5 +1,6 @@
 ### GET ALL USERS
 GET http://localhost:8000/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQxOTA5NDYsImlkIjoxNiwibmFtZSI6Ik1hbWF0In0.rfAArsKE_m36hRONqfYUQ0pT-ARz6wa7Y7rqmvnRUV8
 
 ### GET USER
 GET http://localhost:8000/users/5
@@ -31,11 +32,12 @@ Content-Type: application/json
 GET http://localhost:8000/books
 
 ### GET BOOK
-GET http://localhost:8000/books/2
+GET http://localhost:8000/books/21
 
 ### INSERT BOOK
 POST http://localhost:8000/books
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQxOTA5NDYsImlkIjoxNiwibmFtZSI6Ik1hbWF0In0.rfAArsKE_m36hRONqfYUQ0pT-ARz6wa7Y7rqmvnRUV8
 
 {
     "title": "Bat Man",

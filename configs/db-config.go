@@ -9,14 +9,14 @@ import (
 	"day-13-orm/models"
 )
 
-var (
-	DB *gorm.DB
-)
+// var (
+// 	DB *gorm.DB
+// )
 
-func Init() {
-	InitDB()
-	InitialMigration()
-}
+// func Init() {
+// 	db := InitDB()
+// 	InitialMigration(db)
+// }
 
 type Config struct {
 	DB_Username string
@@ -26,8 +26,7 @@ type Config struct {
 	DB_Name     string
 }
 
-func InitDB() {
-
+func InitDB() *gorm.DB {
 	config := Config{
 		DB_Username: "root",
 		DB_Password: "123456",
@@ -45,13 +44,17 @@ func InitDB() {
 	)
 
 	var err error
-	DB, err = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
+	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})
 	if err != nil {
 		panic(err)
 	}
+
+	InitialMigration(db)
+	
+	return db
 }
 
-func InitialMigration() {
-	DB.AutoMigrate(&models.User{})
-	DB.AutoMigrate(&models.Book{})
+func InitialMigration(db *gorm.DB) {
+	db.AutoMigrate(&models.User{})
+	db.AutoMigrate(&models.Book{})
 }
