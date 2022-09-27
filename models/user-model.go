@@ -10,6 +10,6 @@ type User struct {
 }
 
 type CreateUser struct {
-	User  User   `json:"user" form:"user"`
+	User  *User   `json:"user" form:"user"`
 	Token string `json:"token" form:"token"`
 }

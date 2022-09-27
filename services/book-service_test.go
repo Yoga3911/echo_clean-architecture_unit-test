@@ -67,3 +67,21 @@ func TestGetBookService(t *testing.T) {
 	assert.Equal(t, book.Author, books.Author)
 	assert.Equal(t, book.Description, books.Description)
 }
+
+func TestCreateBookService(t *testing.T) {
+	book := models.Book{
+		Title:     "Batman",
+		Author:    "Boy",
+		Description: "dsa",
+	}
+
+	bookRMock.Mock.On("CreateRepository", book).Return(book, nil)
+	books, err := bookSMock.CreateService(book)
+
+	assert.Nil(t, err)
+	assert.NotNil(t, books)
+
+	assert.Equal(t, book.Title, books.Title)
+	assert.Equal(t, book.Author, books.Author)
+	assert.Equal(t, book.Description, books.Description)
+}

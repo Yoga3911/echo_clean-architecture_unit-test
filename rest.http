@@ -11,7 +11,7 @@ POST http://localhost:8000/users
 Content-Type: application/json
 
 {
-    "name": "Mamat",
+    "name": "Mamat123",
     "email": "mamat@gmail.com",
     "password": "123456"
 }
@@ -38,10 +38,11 @@ GET http://localhost:8000/books/21
 ### INSERT BOOK
 POST http://localhost:8000/books
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQzMDYwMjgsImlkIjoyNiwibmFtZSI6Ik1hbWF0MTIzIn0.0fAS1bWIEgOzpJAX1tzrWoi2XvsFaSw0mt4-lA_uoMQ
 
 {
-    "title": "Bat Man",
-    "author": "Jack Spar",
+    "title": "Bat Man 123",
+    "author": "Jack Spar 123",
     "description": "Buku Bat man"
 }
 

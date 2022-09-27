@@ -9,7 +9,7 @@ import (
 type UserRepositoryMock interface {
 	GetUsersRepository() ([]*models.User, error)
 	GetUserRepository(id string) (*models.User, error)
-	CreateRepository(user models.User) (models.User, error)
+	CreateRepository(userData models.User) (*models.User, error)
 	UpdateRepository(id string, userBody models.User) (*models.User, error)
 	DeleteRepository(id string) error
 }
@@ -46,8 +46,15 @@ func (u *IuserRepositoryMock) GetUserRepository(id string) (*models.User, error)
 	return &user, nil
 }
 
-func (u *IuserRepositoryMock) CreateRepository(user models.User) (models.User, error) {
-	return models.User{}, nil
+func (u *IuserRepositoryMock) CreateRepository(userData models.User) (*models.User, error) {
+	args := u.Mock.Called(userData)
+	if args.Get(0) == nil {
+		return nil, nil
+	}
+
+	user := args.Get(0).(models.User)
+
+	return &user, nil
 }
 func (u *IuserRepositoryMock) UpdateRepository(id string, userBody models.User) (*models.User, error) {
 	return nil, nil

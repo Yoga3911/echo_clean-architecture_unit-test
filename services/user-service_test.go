@@ -68,3 +68,21 @@ func TestGetUserService(t *testing.T) {
 	assert.Equal(t, user.Password, users.Password)
 	assert.Equal(t, user.Email, users.Email)
 }
+
+func TestCreateUserService(t *testing.T) {
+	user := models.User{
+		Name:     "Mamat",
+		Email:    "qwe@gmail.com",
+		Password: "123456",
+	}
+
+	userRMock.Mock.On("CreateRepository", user).Return(user, nil)
+	users, err := userSMock.CreateService(user)
+
+	assert.Nil(t, err)
+	assert.NotNil(t, users)
+
+	assert.Equal(t, user.Name, users.Name)
+	assert.Equal(t, user.Password, users.Password)
+	assert.Equal(t, user.Email, users.Email)
+}

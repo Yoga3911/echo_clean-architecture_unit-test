@@ -9,7 +9,7 @@ import (
 type BookRepository interface {
 	GetBooksRepository() ([]*models.Book, error)
 	GetBookRepository(id string) (*models.Book, error)
-	CreateRepository(Book models.Book) (models.Book, error)
+	CreateRepository(Book models.Book) (*models.Book, error)
 	UpdateRepository(id string, BookBody models.Book) (*models.Book, error)
 	DeleteRepository(id string) error
 }
@@ -44,12 +44,12 @@ func (b *bookRepository) GetBookRepository(id string) (*models.Book, error) {
 	return Book, nil
 }
 
-func (b *bookRepository) CreateRepository(Book models.Book) (models.Book, error) {
+func (b *bookRepository) CreateRepository(Book models.Book) (*models.Book, error) {
 	if err := b.DB.Save(&Book).Error; err != nil {
-		return Book, err
+		return nil, err
 	}
 
-	return Book, nil
+	return &Book, nil
 }
 
 func (b *bookRepository) UpdateRepository(id string, BookBody models.Book) (*models.Book, error) {

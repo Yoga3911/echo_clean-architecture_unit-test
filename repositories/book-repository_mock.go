@@ -9,7 +9,7 @@ import (
 type BookRepositoryMock interface {
 	GetBooksRepository() ([]*models.Book, error)
 	GetBookRepository(id string) (*models.Book, error)
-	CreateRepository(Book models.Book) (models.Book, error)
+	CreateRepository(Book models.Book) (*models.Book, error)
 	UpdateRepository(id string, BookBody models.Book) (*models.Book, error)
 	DeleteRepository(id string) error
 }
@@ -46,9 +46,17 @@ func (b *IbookRepositoryMock) GetBookRepository(id string) (*models.Book, error)
 	return &book, nil
 }
 
-func (u *IbookRepositoryMock) CreateRepository(book models.Book) (models.Book, error) {
-	return models.Book{}, nil
+func (u *IbookRepositoryMock) CreateRepository(bookData models.Book) (*models.Book, error) {
+	args := u.Mock.Called(bookData)
+	if args.Get(0) == nil {
+		return nil, nil
+	}
+
+	book := args.Get(0).(models.Book)
+
+	return &book, nil
 }
+
 func (u *IbookRepositoryMock) UpdateRepository(id string, bookBody models.Book) (*models.Book, error) {
 	return nil, nil
 }

@@ -89,7 +89,7 @@ func (u *userController) CreateController(c echo.Context) error {
 		})
 	}
 
-	user.User, err = u.userS.CreateService(user.User)
+	user.User, err = u.userS.CreateService(*user.User)
 	if err != nil {
 		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
 			Data:    nil,

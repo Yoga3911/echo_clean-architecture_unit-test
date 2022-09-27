@@ -8,7 +8,7 @@ import (
 type BookService interface {
 	GetBooksService() ([]*models.Book, error)
 	GetBookService(id string) (*models.Book, error)
-	CreateService(Book models.Book) (models.Book, error)
+	CreateService(Book models.Book) (*models.Book, error)
 	UpdateService(id string, BookBody models.Book) (*models.Book, error)
 	DeleteService(id string) error
 }
@@ -41,13 +41,13 @@ func (b *bookService) GetBookService(id string) (*models.Book, error) {
 	return Book, nil
 }
 
-func (b *bookService) CreateService(Book models.Book) (models.Book, error) {
-	Book, err := b.BookR.CreateRepository(Book)
+func (b *bookService) CreateService(Book models.Book) (*models.Book, error) {
+	BookR, err := b.BookR.CreateRepository(Book)
 	if err != nil {
-		return Book, err
+		return nil, err
 	}
 
-	return Book, nil
+	return BookR, nil
 }
 
 func (b *bookService) UpdateService(id string, BookBody models.Book) (*models.Book, error) {
