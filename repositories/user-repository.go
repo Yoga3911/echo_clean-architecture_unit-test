@@ -9,9 +9,9 @@ import (
 type UserRepository interface {
 	GetUsersRepository() ([]models.User, error)
 	GetUserRepository(id string) (models.User, error)
-	CreateRepository() (models.User, error)
-	// UpdateRepository(id string) (models.User, error)
-	// DeleteRepository(id string) error
+	CreateRepository(user models.User) (models.User, error)
+	UpdateRepository(id string, userBody models.User) (models.User, error)
+	DeleteRepository(id string) error
 }
 
 type userRepository struct {
@@ -36,7 +36,7 @@ func (u *userRepository) GetUsersRepository() ([]models.User, error) {
 
 func (u *userRepository) GetUserRepository(id string) (models.User, error) {
 	var user models.User
-	
+
 	if err := u.DB.Where("ID = ?", id).Take(&user).Error; err != nil {
 		return user, err
 	}
@@ -44,8 +44,7 @@ func (u *userRepository) GetUserRepository(id string) (models.User, error) {
 	return user, nil
 }
 
-func (u *userRepository) CreateRepository() (models.User, error) {
-	var user models.User
+func (u *userRepository) CreateRepository(user models.User) (models.User, error) {
 	if err := u.DB.Save(&user).Error; err != nil {
 		return user, err
 	}
@@ -53,5 +52,33 @@ func (u *userRepository) CreateRepository() (models.User, error) {
 	return user, nil
 }
 
-// func (u *userRepository) UpdateRepository(id string) (models.User, error) 
-// func (u *userRepository) DeleteRepository(id string) error
+func (u *userRepository) UpdateRepository(id string, userBody models.User) (models.User, error) {
+	user, err := u.GetUserRepository(id)
+	if err != nil {
+		return user, err
+	}
+
+	err = u.DB.Where("ID = ?", id).Updates(models.User{Name: userBody.Name, Email: userBody.Email, Password: userBody.Password}).Error
+	if err != nil {
+		return user, err
+	}
+
+	user.Name = userBody.Name
+	user.Email = userBody.Email
+	user.Password = userBody.Password
+
+	return user, nil
+}
+
+func (u *userRepository) DeleteRepository(id string) error {
+	_, err := u.GetUserRepository(id)
+	if err != nil {
+		return err
+	}
+
+	if err := u.DB.Delete(&models.User{}, id).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

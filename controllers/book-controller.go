@@ -1,115 +1,172 @@
 package controllers
 
-// import (
-// 	"net/http"
+import (
+	"net/http"
 
-// 	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4"
 
-// 	"day-13-orm/configs"
-// 	"day-13-orm/models"
-// )
+	h "day-13-orm/helpers"
+	"day-13-orm/models"
+	"day-13-orm/services"
+)
 
-// // get all books
-// func GetBooksController(c echo.Context) error {
-// 	var books []models.Book
+type BookController interface {
+	GetBooksController(c echo.Context) error
+	GetBookController(c echo.Context) error
+	CreateController(c echo.Context) error
+	UpdateController(c echo.Context) error
+	DeleteController(c echo.Context) error
+}
 
-// 	if err := configs.DB.Find(&books).Error; err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success get all books",
-// 		"books":   books,
-// 	})
-// }
+type bookController struct {
+	BookS services.BookService
+}
 
-// // get book by id
-// func GetBookController(c echo.Context) error {
-// 	// your solution here
-// 	bookId := c.Param("id")
-// 	var book models.Book
+func NewBookController(BookS services.BookService) BookController {
+	return &bookController{
+		BookS: BookS,
+	}
+}
 
-// 	if err := configs.DB.Where("ID = ?", bookId).Take(&book).Error; err != nil {
-// 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-// 			"message": "book not found",
-// 		})
-// 	}
+// get all Books
+func (b *bookController) GetBooksController(c echo.Context) error {
+	Books, err := b.BookS.GetBooksService()
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
 
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success get all books",
-// 		"books":   book,
-// 	})
-// }
+	return h.Response(c, http.StatusOK, h.ResponseModel{
+		Data:    Books,
+		Message: "Get all Books success",
+		Status:  true,
+	})
+}
 
-// // create new book
-// func CreateBookController(c echo.Context) error {
-// 	book := models.Book{}
-// 	c.Bind(&book)
+func (b *bookController) GetBookController(c echo.Context) error {
+	id := c.Param("id")
 
-// 	if err := configs.DB.Save(&book).Error; err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-// 	}
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success create new book",
-// 		"book":    book,
-// 	})
-// }
+	err := h.IsNumber(id)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
 
-// // delete book by id
-// func DeleteBookController(c echo.Context) error {
-// 	// your solution here
-// 	bookId := c.Param("id")
-// 	var book models.Book
+	var Book models.Book
 
-// 	if err := configs.DB.Where("ID = ?", bookId).Take(&book).Error; err != nil {
-// 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-// 			"message": "book not found",
-// 		})
-// 	}
+	Book, err = b.BookS.GetBookService(id)
+	if err != nil {
+		return h.Response(c, http.StatusNotFound, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
 
-// 	if err := configs.DB.Delete(&models.Book{}, bookId).Error; err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": err,
-// 		})
-// 	}
+	return h.Response(c, http.StatusOK, h.ResponseModel{
+		Data:    Book,
+		Message: "Get Book success",
+		Status:  true,
+	})
+}
 
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success delete book",
-// 	})
-// }
+func (b *bookController) CreateController(c echo.Context) error {
+	var Book models.Book
 
-// // update book by id
-// func UpdateBookController(c echo.Context) error {
-// 	// your solution here
-// 	var book models.Book
-// 	bookId := c.Param("id")
+	err := c.Bind(&Book)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
 
-// 	if err := configs.DB.Where("ID = ?", bookId).Take(&book).Error; err != nil {
-// 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-// 			"message": "book not found",
-// 		})
-// 	}
+	Book, err = b.BookS.CreateService(Book)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
 
-// 	var bookBody models.Book
-// 	err := c.Bind(&bookBody)
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": err,
-// 		})
-// 	}
+	return h.Response(c, http.StatusOK, h.ResponseModel{
+		Data:    Book,
+		Message: "Create Book success",
+		Status:  true,
+	})
+}
 
-// 	err = configs.DB.Where("ID = ?", bookId).Updates(models.Book{Title: bookBody.Title, Author: bookBody.Author, Description: bookBody.Description}).Error
-// 	if err != nil {
-// 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-// 			"message": err,
-// 		})
-// 	}
+func (b *bookController) UpdateController(c echo.Context) error {
+	id := c.Param("id")
 
-// 	book.Title = bookBody.Title
-// 	book.Author = bookBody.Author
-// 	book.Description = bookBody.Description
+	err := h.IsNumber(id)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
 
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success update book",
-// 		"book":    book,
-// 	})
-// }
+	var Book models.Book
+
+	err = c.Bind(&Book)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	Book, err = b.BookS.UpdateService(id, Book)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	return h.Response(c, http.StatusOK, h.ResponseModel{
+		Data:    Book,
+		Message: "Update Book success",
+		Status:  true,
+	})
+}
+
+func (b *bookController) DeleteController(c echo.Context) error {
+	id := c.Param("id")
+
+	err := h.IsNumber(id)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	err = b.BookS.DeleteService(id)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	return h.Response(c, http.StatusOK, h.ResponseModel{
+		Data:    nil,
+		Message: "Delete Book success",
+		Status:  true,
+	})
+}

@@ -16,9 +16,14 @@ import (
 
 var (
 	DB = configs.InitDB()
+
 	userR = r.NewUserRepository(DB)
 	userS = s.NewUserService(userR)
 	userC = c.NewUserController(userS)
+	
+	bookR = r.NewBookRepository(DB)
+	bookS = s.NewBookService(bookR)
+	bookC = c.NewBookController(bookS)
 )
 
 func New() *echo.Echo {
@@ -30,20 +35,20 @@ func New() *echo.Echo {
 	e := echo.New()
 	
 	middlewares.LoggerMiddleware(e)
-	// user routing
+
 	e.POST("/users", userC.CreateController)
 	auth := e.Group("")
 	auth.Use(middleware.JWT([]byte(os.Getenv("JWT_KEY"))))
-	e.GET("/users", userC.GetUsersController)
-	e.GET("/users/:id", userC.GetUserController)
-	// auth.DELETE("/users/:id", c.DeleteUserController)
-	// auth.PUT("/users/:id", c.UpdateUserController)
+	auth.GET("/users", userC.GetUsersController)
+	auth.GET("/users/:id", userC.GetUserController)
+	auth.DELETE("/users/:id", userC.DeleteController)
+	auth.PUT("/users/:id", userC.UpdateController)
 
-	// e.GET("/books", c.GetBooksController)
-	// e.GET("/books/:id", c.GetBookController)
-	// auth.POST("/books", c.CreateBookController)
-	// auth.DELETE("/books/:id", c.DeleteBookController)
-	// auth.PUT("/books/:id", c.UpdateBookController)
+	e.GET("/books", bookC.GetBooksController)
+	e.GET("/books/:id", bookC.GetBookController)
+	auth.POST("/books", bookC.CreateController)
+	auth.DELETE("/books/:id", bookC.DeleteController)
+	auth.PUT("/books/:id", bookC.UpdateController)
 
 	return e
 }

@@ -9,15 +9,6 @@ import (
 	"day-13-orm/models"
 )
 
-// var (
-// 	DB *gorm.DB
-// )
-
-// func Init() {
-// 	db := InitDB()
-// 	InitialMigration(db)
-// }
-
 type Config struct {
 	DB_Username string
 	DB_Password string

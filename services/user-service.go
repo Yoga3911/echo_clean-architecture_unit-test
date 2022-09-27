@@ -8,9 +8,9 @@ import (
 type UserService interface {
 	GetUsersService() ([]models.User, error)
 	GetUserService(id string) (models.User, error)
-	CreateService() (models.User, error)
-	// UpdateService(id string) (models.User, error)
-	// DeleteService(id string) error
+	CreateService(user models.User) (models.User, error)
+	UpdateService(id string, userBody models.User) (models.User, error)
+	DeleteService(id string) error
 }
 
 type userService struct {
@@ -41,8 +41,8 @@ func (u *userService) GetUserService(id string) (models.User, error) {
 	return user, nil
 }
 
-func (u *userService) CreateService() (models.User, error) {
-	user, err := u.userR.CreateRepository()
+func (u *userService) CreateService(user models.User) (models.User, error) {
+	user, err := u.userR.CreateRepository(user)
 	if err != nil {
 		return user, err
 	}
@@ -50,5 +50,20 @@ func (u *userService) CreateService() (models.User, error) {
 	return user, nil
 }
 
-// func (u *userService) UpdateService(id string) (models.User, error)
-// func (u *userService) DeleteService(id string) error
+func (u *userService) UpdateService(id string, userBody models.User) (models.User, error) {
+	user, err := u.userR.UpdateRepository(id, userBody)
+	if err != nil {
+		return user, err
+	}
+
+	return user, nil
+}
+
+func (u *userService) DeleteService(id string) error {
+	err := u.userR.DeleteRepository(id)
+	if err != nil {
+		return err
+	}
+
+	return nil
+}

@@ -6,6 +6,8 @@ import (
 	"github.com/labstack/echo/v4"
 
 	h "day-13-orm/helpers"
+	m "day-13-orm/middlewares"
+	"day-13-orm/models"
 	"day-13-orm/services"
 )
 
@@ -32,7 +34,7 @@ func (u *userController) GetUsersController(c echo.Context) error {
 	users, err := u.userS.GetUsersService()
 	if err != nil {
 		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
-			Data:    users,
+			Data:    nil,
 			Message: err.Error(),
 			Status:  false,
 		})
@@ -46,132 +48,137 @@ func (u *userController) GetUsersController(c echo.Context) error {
 }
 
 func (u *userController) GetUserController(c echo.Context) error {
-	userId := c.Param("id")
-	user, err := u.userS.GetUserService(userId)
+	id := c.Param("id")
+
+	err := h.IsNumber(id)
 	if err != nil {
-		return h.Response(c, http.StatusOK, h.ResponseModel{
-			Data:    user,
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
 			Message: err.Error(),
 			Status:  false,
 		})
 	}
+
+	var user models.User
+
+	user, err = u.userS.GetUserService(id)
+	if err != nil {
+		return h.Response(c, http.StatusNotFound, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
 	return h.Response(c, http.StatusOK, h.ResponseModel{
 		Data:    user,
 		Message: "Get user success",
 		Status:  true,
 	})
 }
-func (u *userController) CreateController(c echo.Context) error {
 
-	return nil
+func (u *userController) CreateController(c echo.Context) error {
+	var user models.CreateUser
+
+	err := c.Bind(&user.User)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	user.User, err = u.userS.CreateService(user.User)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	token, err := m.CreateJWTToken(user.User.ID, user.User.Name)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	user.Token = token
+
+	return h.Response(c, http.StatusOK, h.ResponseModel{
+		Data:    user,
+		Message: "Create user success",
+		Status:  true,
+	})
 }
 
 func (u *userController) UpdateController(c echo.Context) error {
+	id := c.Param("id")
 
-	return nil
+	err := h.IsNumber(id)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	var user models.User
+
+	err = c.Bind(&user)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	user, err = u.userS.UpdateService(id, user)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	return h.Response(c, http.StatusOK, h.ResponseModel{
+		Data:    user,
+		Message: "Update user success",
+		Status:  true,
+	})
 }
 
 func (u *userController) DeleteController(c echo.Context) error {
-	return nil
+	id := c.Param("id")
+
+	err := h.IsNumber(id)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	err = u.userS.DeleteService(id)
+	if err != nil {
+		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
+			Data:    nil,
+			Message: err.Error(),
+			Status:  false,
+		})
+	}
+
+	return h.Response(c, http.StatusOK, h.ResponseModel{
+		Data:    nil,
+		Message: "Delete user success",
+		Status:  true,
+	})
 }
-
-// // get user by id
-// func GetUserController(c echo.Context) error {
-// 	// your solution here
-// 	userId := c.Param("id")
-// 	var user models.User
-
-// 	if err := configs.DB.Where("ID = ?", userId).Take(&user).Error; err != nil {
-// 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-// 			"message": "user not found",
-// 		})
-// 	}
-
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success get all users",
-// 		"users":   user,
-// 	})
-// }
-
-// // create new user
-// func CreateUserController(c echo.Context) error {
-// 	user := models.User{}
-// 	c.Bind(&user)
-
-// 	if err := configs.DB.Save(&user).Error; err != nil {
-// 		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
-// 	}
-
-// 	token, err := middlewares.CreateJWTToken(user.ID, user.Name)
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": err,
-// 		})
-// 	}
-
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success create new user",
-// 		"user":    user,
-// 		"token":   token,
-// 	})
-// }
-
-// // delete user by id
-// func DeleteUserController(c echo.Context) error {
-// 	// your solution here
-// 	userId := c.Param("id")
-// 	var user models.User
-
-// 	if err := configs.DB.Where("ID = ?", userId).Take(&user).Error; err != nil {
-// 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-// 			"message": "user not found",
-// 		})
-// 	}
-
-// 	if err := configs.DB.Delete(&models.User{}, userId).Error; err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": err,
-// 		})
-// 	}
-
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success delete user",
-// 	})
-// }
-
-// // update user by id
-// func UpdateUserController(c echo.Context) error {
-// 	// your solution here
-// 	var user models.User
-// 	userId := c.Param("id")
-
-// 	if err := configs.DB.Where("ID = ?", userId).Take(&user).Error; err != nil {
-// 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-// 			"message": "user not found",
-// 		})
-// 	}
-
-// 	var userBody models.User
-// 	err := c.Bind(&userBody)
-// 	if err != nil {
-// 		return c.JSON(http.StatusBadRequest, map[string]interface{}{
-// 			"message": err,
-// 		})
-// 	}
-
-// 	err = configs.DB.Where("ID = ?", userId).Updates(models.User{Name: userBody.Name, Email: userBody.Email, Password: userBody.Password}).Error
-// 	if err != nil {
-// 		return c.JSON(http.StatusNotFound, map[string]interface{}{
-// 			"message": err,
-// 		})
-// 	}
-
-// 	user.Name = userBody.Name
-// 	user.Email = userBody.Email
-// 	user.Password = userBody.Password
-
-// 	return c.JSON(http.StatusOK, map[string]interface{}{
-// 		"message": "success update user",
-// 		"user":    user,
-// 	})
-// }
