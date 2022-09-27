@@ -55,7 +55,7 @@ func (u *userService) UpdateService(id string, userBody models.User) (*models.Us
 	if err != nil {
 		return user, err
 	}
-
+	
 	return user, nil
 }
 

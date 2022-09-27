@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"day-13-orm/models"
+	"fmt"
 
 	"github.com/stretchr/testify/mock"
 )
@@ -56,9 +57,23 @@ func (u *IuserRepositoryMock) CreateRepository(userData models.User) (*models.Us
 
 	return &user, nil
 }
-func (u *IuserRepositoryMock) UpdateRepository(id string, userBody models.User) (*models.User, error) {
-	return nil, nil
+
+func (u *IuserRepositoryMock) UpdateRepository(id string, userData models.User) (*models.User, error) {
+	args := u.Mock.Called(id, userData)
+	if args.Get(0) == nil {
+		return nil, nil
+	}
+
+	user := args.Get(0).(models.User)
+
+	return &user, nil
 }
+
 func (u *IuserRepositoryMock) DeleteRepository(id string) error {
+	args := u.Mock.Called(id)
+	if args.Get(0) != nil {
+		return fmt.Errorf("must nil")
+	}
+
 	return nil
 }

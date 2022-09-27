@@ -7,6 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"gorm.io/gorm"
 )
 
 var bookRMock = &repositories.IbookRepositoryMock{Mock: mock.Mock{}}
@@ -70,8 +71,8 @@ func TestGetBookService(t *testing.T) {
 
 func TestCreateBookService(t *testing.T) {
 	book := models.Book{
-		Title:     "Batman",
-		Author:    "Boy",
+		Title:       "Batman",
+		Author:      "Boy",
 		Description: "dsa",
 	}
 
@@ -84,4 +85,33 @@ func TestCreateBookService(t *testing.T) {
 	assert.Equal(t, book.Title, books.Title)
 	assert.Equal(t, book.Author, books.Author)
 	assert.Equal(t, book.Description, books.Description)
+}
+
+func TestUpdateBookService(t *testing.T) {
+	book := models.Book{
+		Model: gorm.Model{
+			ID: 1,
+		},
+		Title:       "Batman",
+		Author:      "qwe",
+		Description: "dsadass",
+	}
+
+	bookRMock.Mock.On("UpdateRepository", "1", book).Return(book, nil)
+	books, err := bookSMock.UpdateService("1", book)
+
+	assert.Nil(t, err)
+	assert.NotNil(t, books)
+
+	assert.Equal(t, uint(1), books.ID)
+	assert.Equal(t, book.Title, books.Title)
+	assert.Equal(t, book.Description, books.Description)
+	assert.Equal(t, book.Author, books.Author)
+}
+
+func TestDeleteBookService(t *testing.T) {
+	bookRMock.Mock.On("DeleteRepository", "1").Return(nil)
+	err := bookSMock.DeleteService("1")
+
+	assert.Nil(t, err)
 }

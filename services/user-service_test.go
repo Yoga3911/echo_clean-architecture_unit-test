@@ -7,6 +7,7 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
+	"gorm.io/gorm"
 )
 
 var userRMock = &repositories.IuserRepositoryMock{Mock: mock.Mock{}}
@@ -85,4 +86,33 @@ func TestCreateUserService(t *testing.T) {
 	assert.Equal(t, user.Name, users.Name)
 	assert.Equal(t, user.Password, users.Password)
 	assert.Equal(t, user.Email, users.Email)
+}
+
+func TestUpdateUserService(t *testing.T) {
+	user := models.User{
+		Model: gorm.Model{
+			ID: 1,
+		},
+		Name:     "Mamat",
+		Email:    "qwe@gmail.com",
+		Password: "123456",
+	}
+
+	userRMock.Mock.On("UpdateRepository", "1", user).Return(user, nil)
+	users, err := userSMock.UpdateService("1", user)
+
+	assert.Nil(t, err)
+	assert.NotNil(t, users)
+
+	assert.Equal(t, uint(1), users.ID)
+	assert.Equal(t, user.Name, users.Name)
+	assert.Equal(t, user.Password, users.Password)
+	assert.Equal(t, user.Email, users.Email)
+}
+
+func TestDeleteUserService(t *testing.T) {
+	userRMock.Mock.On("DeleteRepository", "1").Return(nil)
+	err := userSMock.DeleteService("1")
+
+	assert.Nil(t, err)
 }
