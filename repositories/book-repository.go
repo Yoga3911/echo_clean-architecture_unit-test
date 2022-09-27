@@ -7,10 +7,10 @@ import (
 )
 
 type BookRepository interface {
-	GetBooksRepository() ([]models.Book, error)
-	GetBookRepository(id string) (models.Book, error)
+	GetBooksRepository() ([]*models.Book, error)
+	GetBookRepository(id string) (*models.Book, error)
 	CreateRepository(Book models.Book) (models.Book, error)
-	UpdateRepository(id string, BookBody models.Book) (models.Book, error)
+	UpdateRepository(id string, BookBody models.Book) (*models.Book, error)
 	DeleteRepository(id string) error
 }
 
@@ -24,8 +24,8 @@ func NewBookRepository(DB *gorm.DB) BookRepository {
 	}
 }
 
-func (b *bookRepository) GetBooksRepository() ([]models.Book, error) {
-	var Books []models.Book
+func (b *bookRepository) GetBooksRepository() ([]*models.Book, error) {
+	var Books []*models.Book
 
 	if err := b.DB.Find(&Books).Error; err != nil {
 		return nil, err
@@ -34,8 +34,8 @@ func (b *bookRepository) GetBooksRepository() ([]models.Book, error) {
 	return Books, nil
 }
 
-func (b *bookRepository) GetBookRepository(id string) (models.Book, error) {
-	var Book models.Book
+func (b *bookRepository) GetBookRepository(id string) (*models.Book, error) {
+	var Book *models.Book
 
 	if err := b.DB.Where("ID = ?", id).Take(&Book).Error; err != nil {
 		return Book, err
@@ -52,7 +52,7 @@ func (b *bookRepository) CreateRepository(Book models.Book) (models.Book, error)
 	return Book, nil
 }
 
-func (b *bookRepository) UpdateRepository(id string, BookBody models.Book) (models.Book, error) {
+func (b *bookRepository) UpdateRepository(id string, BookBody models.Book) (*models.Book, error) {
 	Book, err := b.GetBookRepository(id)
 	if err != nil {
 		return Book, err

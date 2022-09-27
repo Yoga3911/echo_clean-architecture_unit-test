@@ -58,7 +58,7 @@ func (b *bookController) GetBookController(c echo.Context) error {
 		})
 	}
 
-	var Book models.Book
+	var Book *models.Book
 
 	Book, err = b.BookS.GetBookService(id)
 	if err != nil {
@@ -116,7 +116,7 @@ func (b *bookController) UpdateController(c echo.Context) error {
 		})
 	}
 
-	var Book models.Book
+	var Book *models.Book
 
 	err = c.Bind(&Book)
 	if err != nil {
@@ -127,7 +127,7 @@ func (b *bookController) UpdateController(c echo.Context) error {
 		})
 	}
 
-	Book, err = b.BookS.UpdateService(id, Book)
+	Book, err = b.BookS.UpdateService(id, *Book)
 	if err != nil {
 		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
 			Data:    nil,

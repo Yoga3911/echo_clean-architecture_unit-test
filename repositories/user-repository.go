@@ -7,10 +7,10 @@ import (
 )
 
 type UserRepository interface {
-	GetUsersRepository() ([]models.User, error)
-	GetUserRepository(id string) (models.User, error)
+	GetUsersRepository() ([]*models.User, error)
+	GetUserRepository(id string) (*models.User, error)
 	CreateRepository(user models.User) (models.User, error)
-	UpdateRepository(id string, userBody models.User) (models.User, error)
+	UpdateRepository(id string, userBody models.User) (*models.User, error)
 	DeleteRepository(id string) error
 }
 
@@ -24,8 +24,8 @@ func NewUserRepository(DB *gorm.DB) UserRepository {
 	}
 }
 
-func (u *userRepository) GetUsersRepository() ([]models.User, error) {
-	var users []models.User
+func (u *userRepository) GetUsersRepository() ([]*models.User, error) {
+	var users []*models.User
 
 	if err := u.DB.Find(&users).Error; err != nil {
 		return nil, err
@@ -34,14 +34,14 @@ func (u *userRepository) GetUsersRepository() ([]models.User, error) {
 	return users, nil
 }
 
-func (u *userRepository) GetUserRepository(id string) (models.User, error) {
+func (u *userRepository) GetUserRepository(id string) (*models.User, error) {
 	var user models.User
 
 	if err := u.DB.Where("ID = ?", id).Take(&user).Error; err != nil {
-		return user, err
+		return nil, err
 	}
 
-	return user, nil
+	return &user, nil
 }
 
 func (u *userRepository) CreateRepository(user models.User) (models.User, error) {
@@ -52,7 +52,7 @@ func (u *userRepository) CreateRepository(user models.User) (models.User, error)
 	return user, nil
 }
 
-func (u *userRepository) UpdateRepository(id string, userBody models.User) (models.User, error) {
+func (u *userRepository) UpdateRepository(id string, userBody models.User) (*models.User, error) {
 	user, err := u.GetUserRepository(id)
 	if err != nil {
 		return user, err

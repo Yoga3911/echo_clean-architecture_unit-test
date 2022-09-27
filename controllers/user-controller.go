@@ -59,7 +59,7 @@ func (u *userController) GetUserController(c echo.Context) error {
 		})
 	}
 
-	var user models.User
+	var user *models.User
 
 	user, err = u.userS.GetUserService(id)
 	if err != nil {
@@ -128,7 +128,7 @@ func (u *userController) UpdateController(c echo.Context) error {
 		})
 	}
 
-	var user models.User
+	var user *models.User
 
 	err = c.Bind(&user)
 	if err != nil {
@@ -139,7 +139,7 @@ func (u *userController) UpdateController(c echo.Context) error {
 		})
 	}
 
-	user, err = u.userS.UpdateService(id, user)
+	user, err = u.userS.UpdateService(id, *user)
 	if err != nil {
 		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
 			Data:    nil,

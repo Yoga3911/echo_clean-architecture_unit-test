@@ -6,10 +6,10 @@ import (
 )
 
 type BookService interface {
-	GetBooksService() ([]models.Book, error)
-	GetBookService(id string) (models.Book, error)
+	GetBooksService() ([]*models.Book, error)
+	GetBookService(id string) (*models.Book, error)
 	CreateService(Book models.Book) (models.Book, error)
-	UpdateService(id string, BookBody models.Book) (models.Book, error)
+	UpdateService(id string, BookBody models.Book) (*models.Book, error)
 	DeleteService(id string) error
 }
 
@@ -23,7 +23,7 @@ func NewBookService(BookR repositories.BookRepository) BookService {
 	}
 }
 
-func (b *bookService) GetBooksService() ([]models.Book, error) {
+func (b *bookService) GetBooksService() ([]*models.Book, error) {
 	Books, err := b.BookR.GetBooksRepository()
 	if err != nil {
 		return nil, err
@@ -32,10 +32,10 @@ func (b *bookService) GetBooksService() ([]models.Book, error) {
 	return Books, nil
 }
 
-func (b *bookService) GetBookService(id string) (models.Book, error) {
+func (b *bookService) GetBookService(id string) (*models.Book, error) {
 	Book, err := b.BookR.GetBookRepository(id)
 	if err != nil {
-		return Book, err
+		return nil, err
 	}
 
 	return Book, nil
@@ -50,7 +50,7 @@ func (b *bookService) CreateService(Book models.Book) (models.Book, error) {
 	return Book, nil
 }
 
-func (b *bookService) UpdateService(id string, BookBody models.Book) (models.Book, error) {
+func (b *bookService) UpdateService(id string, BookBody models.Book) (*models.Book, error) {
 	Book, err := b.BookR.UpdateRepository(id, BookBody)
 	if err != nil {
 		return Book, err

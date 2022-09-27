@@ -6,10 +6,10 @@ import (
 )
 
 type UserService interface {
-	GetUsersService() ([]models.User, error)
-	GetUserService(id string) (models.User, error)
+	GetUsersService() ([]*models.User, error)
+	GetUserService(id string) (*models.User, error)
 	CreateService(user models.User) (models.User, error)
-	UpdateService(id string, userBody models.User) (models.User, error)
+	UpdateService(id string, userBody models.User) (*models.User, error)
 	DeleteService(id string) error
 }
 
@@ -23,7 +23,7 @@ func NewUserService(userR repositories.UserRepository) UserService {
 	}
 }
 
-func (u *userService) GetUsersService() ([]models.User, error) {
+func (u *userService) GetUsersService() ([]*models.User, error) {
 	users, err := u.userR.GetUsersRepository()
 	if err != nil {
 		return nil, err
@@ -32,10 +32,10 @@ func (u *userService) GetUsersService() ([]models.User, error) {
 	return users, nil
 }
 
-func (u *userService) GetUserService(id string) (models.User, error) {
+func (u *userService) GetUserService(id string) (*models.User, error) {
 	user, err := u.userR.GetUserRepository(id)
 	if err != nil {
-		return user, err
+		return nil, err
 	}
 
 	return user, nil
@@ -50,7 +50,7 @@ func (u *userService) CreateService(user models.User) (models.User, error) {
 	return user, nil
 }
 
-func (u *userService) UpdateService(id string, userBody models.User) (models.User, error) {
+func (u *userService) UpdateService(id string, userBody models.User) (*models.User, error) {
 	user, err := u.userR.UpdateRepository(id, userBody)
 	if err != nil {
 		return user, err
