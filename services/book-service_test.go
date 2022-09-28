@@ -3,11 +3,11 @@ package services
 import (
 	"day-13-orm/models"
 	"day-13-orm/repositories"
+	"fmt"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
-	"gorm.io/gorm"
 )
 
 var bookRMock = &repositories.IbookRepositoryMock{Mock: mock.Mock{}}
@@ -51,7 +51,7 @@ func TestGetBooksService(t *testing.T) {
 	assert.Equal(t, booksM[0].Description, books[0].Description)
 }
 
-func TestGetBookService(t *testing.T) {
+func TestGetBookService_Success(t *testing.T) {
 	book := models.Book{
 		Title:       "Batman",
 		Author:      "Boy",
@@ -69,7 +69,15 @@ func TestGetBookService(t *testing.T) {
 	assert.Equal(t, book.Description, books.Description)
 }
 
-func TestCreateBookService(t *testing.T) {
+func TestGetBookService_Failure(t *testing.T) {
+	bookRMock.Mock.On("GetBookRepository", "3").Return(nil, fmt.Errorf("book not found"))
+	book, err := bookSMock.GetBookService("3")
+
+	assert.NotNil(t, err)
+	assert.Nil(t, book)
+}
+
+func TestCreateBookService_Success(t *testing.T) {
 	book := models.Book{
 		Title:       "Batman",
 		Author:      "Boy",
@@ -87,11 +95,22 @@ func TestCreateBookService(t *testing.T) {
 	assert.Equal(t, book.Description, books.Description)
 }
 
-func TestUpdateBookService(t *testing.T) {
+func TestCreateBookService_Failure(t *testing.T) {
 	book := models.Book{
-		Model: gorm.Model{
-			ID: 1,
-		},
+		Title:       "Batman32",
+		Author:      "Bo321y",
+		Description: "dsa321",
+	}
+
+	bookRMock.Mock.On("CreateRepository", book).Return(nil, fmt.Errorf("create book failed"))
+	books, err := bookSMock.CreateService(book)
+
+	assert.Nil(t, books)
+	assert.NotNil(t, err)
+}
+
+func TestUpdateBookService_Success(t *testing.T) {
+	book := models.Book{
 		Title:       "Batman",
 		Author:      "qwe",
 		Description: "dsadass",
@@ -103,15 +122,36 @@ func TestUpdateBookService(t *testing.T) {
 	assert.Nil(t, err)
 	assert.NotNil(t, books)
 
-	assert.Equal(t, uint(1), books.ID)
+	assert.Equal(t, book.ID, books.ID)
 	assert.Equal(t, book.Title, books.Title)
 	assert.Equal(t, book.Description, books.Description)
 	assert.Equal(t, book.Author, books.Author)
 }
 
-func TestDeleteBookService(t *testing.T) {
+func TestUpdateBookService_Failure(t *testing.T) {
+	book := models.Book{
+		Title:       "Batman123",
+		Author:      "qwe321",
+		Description: "dsadas32",
+	}
+
+	bookRMock.Mock.On("UpdateRepository", "2", book).Return(nil, fmt.Errorf("book not found"))
+	books, err := bookSMock.UpdateService("2", book)
+
+	assert.Nil(t, books)
+	assert.NotNil(t, err)
+}
+
+func TestDeleteBookService_Success(t *testing.T) {
 	bookRMock.Mock.On("DeleteRepository", "1").Return(nil)
 	err := bookSMock.DeleteService("1")
 
 	assert.Nil(t, err)
+}
+
+func TestDeleteBookService_Failure(t *testing.T) {
+	bookRMock.Mock.On("DeleteRepository", "2").Return(fmt.Errorf("user not found"))
+	err := bookSMock.DeleteService("2")
+
+	assert.NotNil(t, err)
 }

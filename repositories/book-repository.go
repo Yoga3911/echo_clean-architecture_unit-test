@@ -38,7 +38,7 @@ func (b *bookRepository) GetBookRepository(id string) (*models.Book, error) {
 	var Book *models.Book
 
 	if err := b.DB.Where("ID = ?", id).Take(&Book).Error; err != nil {
-		return Book, err
+		return nil, err
 	}
 
 	return Book, nil
@@ -55,12 +55,12 @@ func (b *bookRepository) CreateRepository(Book models.Book) (*models.Book, error
 func (b *bookRepository) UpdateRepository(id string, BookBody models.Book) (*models.Book, error) {
 	Book, err := b.GetBookRepository(id)
 	if err != nil {
-		return Book, err
+		return nil, err
 	}
 
 	err = b.DB.Where("ID = ?", id).Updates(models.Book{Title: BookBody.Title, Author: BookBody.Author, Description: BookBody.Description}).Error
 	if err != nil {
-		return Book, err
+		return nil, err
 	}
 
 	Book.Title = BookBody.Title

@@ -46,7 +46,7 @@ func (u *userRepository) GetUserRepository(id string) (*models.User, error) {
 
 func (u *userRepository) CreateRepository(user models.User) (*models.User, error) {
 	if err := u.DB.Save(&user).Error; err != nil {
-		return &user, err
+		return nil, err
 	}
 
 	return &user, nil
@@ -55,12 +55,12 @@ func (u *userRepository) CreateRepository(user models.User) (*models.User, error
 func (u *userRepository) UpdateRepository(id string, userBody models.User) (*models.User, error) {
 	user, err := u.GetUserRepository(id)
 	if err != nil {
-		return user, err
+		return nil, err
 	}
 
 	err = u.DB.Where("ID = ?", id).Updates(models.User{Name: userBody.Name, Email: userBody.Email, Password: userBody.Password}).Error
 	if err != nil {
-		return user, err
+		return nil, err
 	}
 
 	user.Name = userBody.Name

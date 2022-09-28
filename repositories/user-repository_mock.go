@@ -28,7 +28,7 @@ func NewUserRepositoryMock(mock mock.Mock) UserRepositoryMock {
 func (u *IuserRepositoryMock) GetUsersRepository() ([]*models.User, error) {
 	args := u.Mock.Called()
 	if args.Get(0) == nil {
-		return nil, nil
+		return nil, args.Get(1).(error)
 	}
 
 	users := args.Get(0).([]*models.User)
@@ -39,18 +39,17 @@ func (u *IuserRepositoryMock) GetUsersRepository() ([]*models.User, error) {
 func (u *IuserRepositoryMock) GetUserRepository(id string) (*models.User, error) {
 	args := u.Mock.Called(id)
 	if args.Get(0) == nil {
-		return nil, nil
+		return nil, args.Get(1).(error)
 	}
 
 	user := args.Get(0).(models.User)
-
 	return &user, nil
 }
 
 func (u *IuserRepositoryMock) CreateRepository(userData models.User) (*models.User, error) {
 	args := u.Mock.Called(userData)
 	if args.Get(0) == nil {
-		return nil, nil
+		return nil, args.Get(1).(error)
 	}
 
 	user := args.Get(0).(models.User)
@@ -61,7 +60,7 @@ func (u *IuserRepositoryMock) CreateRepository(userData models.User) (*models.Us
 func (u *IuserRepositoryMock) UpdateRepository(id string, userData models.User) (*models.User, error) {
 	args := u.Mock.Called(id, userData)
 	if args.Get(0) == nil {
-		return nil, nil
+		return nil, args.Get(1).(error)
 	}
 
 	user := args.Get(0).(models.User)

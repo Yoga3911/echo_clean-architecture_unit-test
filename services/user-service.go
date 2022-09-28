@@ -44,7 +44,7 @@ func (u *userService) GetUserService(id string) (*models.User, error) {
 func (u *userService) CreateService(user models.User) (*models.User, error) {
 	userR, err := u.userR.CreateRepository(user)
 	if err != nil {
-		return userR, err
+		return nil, err
 	}
 
 	return userR, nil
@@ -53,9 +53,9 @@ func (u *userService) CreateService(user models.User) (*models.User, error) {
 func (u *userService) UpdateService(id string, userBody models.User) (*models.User, error) {
 	user, err := u.userR.UpdateRepository(id, userBody)
 	if err != nil {
-		return user, err
+		return nil, err
 	}
-	
+
 	return user, nil
 }
 

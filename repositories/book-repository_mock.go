@@ -39,7 +39,7 @@ func (b *IbookRepositoryMock) GetBooksRepository() ([]*models.Book, error) {
 func (b *IbookRepositoryMock) GetBookRepository(id string) (*models.Book, error) {
 	args := b.Mock.Called(id)
 	if args.Get(0) == nil {
-		return nil, nil
+		return nil, args.Get(1).(error)
 	}
 
 	book := args.Get(0).(models.Book)
@@ -50,7 +50,7 @@ func (b *IbookRepositoryMock) GetBookRepository(id string) (*models.Book, error)
 func (u *IbookRepositoryMock) CreateRepository(bookData models.Book) (*models.Book, error) {
 	args := u.Mock.Called(bookData)
 	if args.Get(0) == nil {
-		return nil, nil
+		return nil, args.Get(1).(error)
 	}
 
 	book := args.Get(0).(models.Book)
@@ -61,7 +61,7 @@ func (u *IbookRepositoryMock) CreateRepository(bookData models.Book) (*models.Bo
 func (u *IbookRepositoryMock) UpdateRepository(id string, bookData models.Book) (*models.Book, error) {
 	args := u.Mock.Called(id, bookData)
 	if args.Get(0) == nil {
-		return nil, nil
+		return nil,  args.Get(1).(error)
 	}
 
 	book := args.Get(0).(models.Book)
