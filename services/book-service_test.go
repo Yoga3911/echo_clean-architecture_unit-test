@@ -3,6 +3,7 @@ package services
 import (
 	"day-13-orm/models"
 	"day-13-orm/repositories"
+	"errors"
 	"fmt"
 	"testing"
 
@@ -10,10 +11,12 @@ import (
 	"github.com/stretchr/testify/mock"
 )
 
-var bookRMock = &repositories.IbookRepositoryMock{Mock: mock.Mock{}}
-var bookSMock = NewBookService(bookRMock)
+var (
+	bookRMock = &repositories.IbookRepositoryMock{Mock: mock.Mock{}}
+	bookSMock = NewBookService(bookRMock)
+)
 
-func TestGetBooksService(t *testing.T) {
+func TestGetBooksService_Success(t *testing.T) {
 	booksMP := []*models.Book{
 		{
 			Title:       "Batman",
@@ -49,6 +52,16 @@ func TestGetBooksService(t *testing.T) {
 	assert.Equal(t, booksM[0].Title, books[0].Title)
 	assert.Equal(t, booksM[0].Author, books[0].Author)
 	assert.Equal(t, booksM[0].Description, books[0].Description)
+}
+
+func TestGetBooksService_Failure(t *testing.T) {
+	bookRMock = &repositories.IbookRepositoryMock{Mock: mock.Mock{}}
+	bookSMock = NewBookService(bookRMock)
+	bookRMock.Mock.On("GetBooksRepository").Return(nil, errors.New("get all books failed"))
+	books, err := bookSMock.GetBooksService()
+
+	assert.Nil(t, books)
+	assert.NotNil(t, err)
 }
 
 func TestGetBookService_Success(t *testing.T) {
@@ -150,7 +163,7 @@ func TestDeleteBookService_Success(t *testing.T) {
 }
 
 func TestDeleteBookService_Failure(t *testing.T) {
-	bookRMock.Mock.On("DeleteRepository", "2").Return(fmt.Errorf("user not found"))
+	bookRMock.Mock.On("DeleteRepository", "2").Return(fmt.Errorf("book not found"))
 	err := bookSMock.DeleteService("2")
 
 	assert.NotNil(t, err)

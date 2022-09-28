@@ -28,7 +28,7 @@ func NewBookRepositoryMock(mock mock.Mock) BookRepositoryMock {
 func (b *IbookRepositoryMock) GetBooksRepository() ([]*models.Book, error) {
 	args := b.Mock.Called()
 	if args.Get(0) == nil {
-		return nil, nil
+		return nil, args.Get(1).(error)
 	}
 
 	books := args.Get(0).([]*models.Book)

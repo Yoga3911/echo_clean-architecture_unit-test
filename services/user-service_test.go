@@ -12,8 +12,10 @@ import (
 	"gorm.io/gorm"
 )
 
-var userRMock = &repositories.IuserRepositoryMock{Mock: mock.Mock{}}
-var userSMock = NewUserService(userRMock)
+var (
+	userRMock = &repositories.IuserRepositoryMock{Mock: mock.Mock{}}
+	userSMock = NewUserService(userRMock)
+)
 
 func TestGetUsersService_Success(t *testing.T) {
 	usersMP := []*models.User{
@@ -54,6 +56,8 @@ func TestGetUsersService_Success(t *testing.T) {
 }
 
 func TestGetUsersService_Failure(t *testing.T) {
+	userRMock = &repositories.IuserRepositoryMock{Mock: mock.Mock{}}
+	userSMock = NewUserService(userRMock)
 	userRMock.Mock.On("GetUsersRepository").Return(nil, errors.New("get all users failed"))
 	users, err := userSMock.GetUsersService()
 
