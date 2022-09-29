@@ -6,12 +6,14 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestIsNumber(t *testing.T) {
+func TestIsNumber_Success(t *testing.T) {
 	err := IsNumber("123")
-	if err != nil {
-		t.Error("Not a number")
-		t.Fail()
-	}
 
 	assert.Nil(t, err)
+}
+
+func TestIsNumber_Failure(t *testing.T) {
+	err := IsNumber("12dwq3")
+
+	assert.NotNil(t, err)
 }
