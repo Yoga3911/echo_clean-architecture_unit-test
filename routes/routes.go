@@ -3,7 +3,7 @@ package routes
 import (
 	"day-13-orm/configs"
 	c "day-13-orm/controllers"
-	"day-13-orm/middlewares"
+	m "day-13-orm/middlewares"
 	r "day-13-orm/repositories"
 	s "day-13-orm/services"
 	"log"
@@ -17,9 +17,11 @@ import (
 var (
 	DB = configs.InitDB()
 
+	JWT = m.NewJWTS()
+
 	userR = r.NewUserRepository(DB)
 	userS = s.NewUserService(userR)
-	userC = c.NewUserController(userS)
+	userC = c.NewUserController(userS, JWT)
 	
 	bookR = r.NewBookRepository(DB)
 	bookS = s.NewBookService(bookR)
@@ -34,13 +36,13 @@ func New() *echo.Echo {
 
 	e := echo.New()
 	
-	middlewares.LoggerMiddleware(e)
+	m.LoggerMiddleware(e)
 
 	e.POST("/users", userC.CreateController)
 	auth := e.Group("")
 	auth.Use(middleware.JWT([]byte(os.Getenv("JWT_KEY"))))
-	auth.GET("/users", userC.GetUsersController)
-	auth.GET("/users/:id", userC.GetUserController)
+	e.GET("/users", userC.GetUsersController)
+	e.GET("/users/:id", userC.GetUserController)
 	auth.DELETE("/users/:id", userC.DeleteController)
 	auth.PUT("/users/:id", userC.UpdateController)
 

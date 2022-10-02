@@ -4,7 +4,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQzODA4O
 
 ### GET USER
 GET http://localhost:8000/users/22
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQzMDMyMzksImlkIjoyNCwibmFtZSI6Ik1hbWF0In0.Y96EzfmV58SLiFFqbS2ibO8_50m9usMFfMGkZ56MDco
+# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQzMDMyMzksImlkIjoyNCwibmFtZSI6Ik1hbWF0In0.Y96EzfmV58SLiFFqbS2ibO8_50m9usMFfMGkZ56MDco
 
 ### INSERT USER
 POST http://localhost:8000/users

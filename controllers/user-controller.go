@@ -21,11 +21,13 @@ type UserController interface {
 
 type userController struct {
 	userS services.UserService
+	jwt m.JWTS
 }
 
-func NewUserController(userS services.UserService) UserController {
+func NewUserController(userS services.UserService, jwtS m.JWTS) UserController {
 	return &userController{
 		userS: userS,
+		jwt: jwtS,
 	}
 }
 
@@ -98,7 +100,7 @@ func (u *userController) CreateController(c echo.Context) error {
 		})
 	}
 
-	token, err := m.CreateJWTToken(user.User.ID, user.User.Name)
+	token, err := u.jwt.CreateJWTToken(user.User.ID, user.User.Name)
 	if err != nil {
 		return h.Response(c, http.StatusBadRequest, h.ResponseModel{
 			Data:    nil,
@@ -108,7 +110,6 @@ func (u *userController) CreateController(c echo.Context) error {
 	}
 
 	user.Token = token
-
 	return h.Response(c, http.StatusOK, h.ResponseModel{
 		Data:    user,
 		Message: "Create user success",
