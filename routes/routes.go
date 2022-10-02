@@ -38,11 +38,11 @@ func New() *echo.Echo {
 	
 	m.LoggerMiddleware(e)
 
-	e.POST("/users", userC.CreateController)
 	auth := e.Group("")
 	auth.Use(middleware.JWT([]byte(os.Getenv("JWT_KEY"))))
-	e.GET("/users", userC.GetUsersController)
-	e.GET("/users/:id", userC.GetUserController)
+	auth.GET("/users", userC.GetUsersController)
+	auth.GET("/users/:id", userC.GetUserController)
+	e.POST("/users", userC.CreateController)
 	auth.DELETE("/users/:id", userC.DeleteController)
 	auth.PUT("/users/:id", userC.UpdateController)
 
