@@ -1,10 +1,10 @@
 ### GET ALL USERS
 GET http://localhost:8000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQzODA4ODMsImlkIjoyOCwibmFtZSI6Ik1hbWF0MTIzIn0.-jVqSS-7I3Dhmd5D_vWFuF2ZLYWMvDqu5OIHpA1AVUE
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
 
 ### GET USER
-GET http://localhost:8000/users/22
-# Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQzMDMyMzksImlkIjoyNCwibmFtZSI6Ik1hbWF0In0.Y96EzfmV58SLiFFqbS2ibO8_50m9usMFfMGkZ56MDco
+GET http://localhost:8000/users/23
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
 
 ### INSERT USER
 POST http://localhost:8000/users
@@ -17,11 +17,13 @@ Content-Type: application/json
 }
 
 ### DELETE USER
-DELETE  http://localhost:8000/users/19f
+DELETE  http://localhost:8000/users/22
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
 
 ### PUT USER
-PUT http://localhost:8000/users/17f
+PUT http://localhost:8000/users/23
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
 
 {
     "name": "234",
@@ -33,12 +35,12 @@ Content-Type: application/json
 GET http://localhost:8000/books
 
 ### GET BOOK
-GET http://localhost:8000/books/21
+GET http://localhost:8000/books/8
 
 ### INSERT BOOK
 POST http://localhost:8000/books
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQzMDYwMjgsImlkIjoyNiwibmFtZSI6Ik1hbWF0MTIzIn0.0fAS1bWIEgOzpJAX1tzrWoi2XvsFaSw0mt4-lA_uoMQ
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
 
 {
     "title": "Bat Man 123",
@@ -47,11 +49,13 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQzMDYwM
 }
 
 ### DELETE BOOK
-DELETE  http://localhost:8000/books/3
+DELETE  http://localhost:8000/books/9
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
 
 ### PUT BOOK
-PUT http://localhost:8000/books/2
+PUT http://localhost:8000/books/8
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
 
 {
     "title": "Aqua Man",
