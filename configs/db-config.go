@@ -41,14 +41,23 @@ func InitDB() *gorm.DB {
 		config.DB_Port,
 		config.DB_Name,
 	)
-
-	db, err := gorm.Open(mysql.Open(connectionString), &gorm.Config{})
-	if err != nil {
-		panic(err)
+	var db *gorm.DB
+	env := "dev"
+	switch env {
+	case "prod":
+		db, err = gorm.Open(mysql.Open(os.Getenv("DSN")))
+		if err != nil {
+			panic(err)
+		}
+	case "dev":
+		db, err = gorm.Open(mysql.Open(connectionString), &gorm.Config{})
+		if err != nil {
+			panic(err)
+		}
 	}
 
 	InitialMigration(db)
-	
+
 	return db
 }
 

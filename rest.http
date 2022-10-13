@@ -1,13 +1,13 @@
 ### GET ALL USERS
 GET http://localhost:8000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU1NDY5ODYsImlkIjo1LCJpc3MiOiJxd2VydHkiLCJuYW1lIjoiTWFtYXQxMjMifQ.JqDopOqBfLKAIzysBV7Swt5SqdnRTIcuI-Hvmpq35eA
 
 ### GET USER
 GET http://localhost:8000/users/23
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
 
 ### INSERT USER
-POST http://localhost:8000/users
+POST http://localhost:8002/users
 Content-Type: application/json
 
 {
