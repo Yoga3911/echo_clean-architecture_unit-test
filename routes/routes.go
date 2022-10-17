@@ -31,7 +31,7 @@ var (
 func New() *echo.Echo {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 
 	e := echo.New()

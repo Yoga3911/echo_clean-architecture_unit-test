@@ -10,18 +10,20 @@ services:
       - "3307:3306"
     networks:
       - golang
+    healthcheck:
+      test: ["CMD", "mysql", "-u", "root", "-p123456", "-e", "show schemas"]
     tty: true
   app:
     build:
       context: .
-    command: go run main.go
     volumes:
       - go_storage:/go_storage
     container_name: golang_app
     ports:
       - "8002:8000"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     networks:
       - golang
     tty: true

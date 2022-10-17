@@ -23,7 +23,7 @@ type Config struct {
 func InitDB() *gorm.DB {
 	err := godotenv.Load()
 	if err != nil {
-		log.Fatalln(err)
+		log.Println(err)
 	}
 
 	config := Config{
