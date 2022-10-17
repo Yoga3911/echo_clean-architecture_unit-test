@@ -17,6 +17,7 @@ services:
   app:
     build:
       context: .
+    image: yoga3911/backend-ku:v1.1.2
     volumes:
       - go_storage:/go_storage
     container_name: golang_app
