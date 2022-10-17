@@ -1,6 +1,6 @@
 ### GET ALL USERS
-GET http://localhost:8000/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU1NDY5ODYsImlkIjo1LCJpc3MiOiJxd2VydHkiLCJuYW1lIjoiTWFtYXQxMjMifQ.JqDopOqBfLKAIzysBV7Swt5SqdnRTIcuI-Hvmpq35eA
+GET http://localhost:8002/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU5ODA4MTIsImlkIjo4LCJpc3MiOiJxd2VydHkiLCJuYW1lIjoiTWFtYXQxMjMifQ.58MeVAxQydBIsYojL_xlAczDJNhQyK6HJ9n9NrouC_w
 
 ### GET USER
 GET http://localhost:8000/users/23

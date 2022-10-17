@@ -12,6 +12,7 @@ services:
       - golang
     healthcheck:
       test: ["CMD", "mysql", "-u", "root", "-p123456", "-e", "show schemas"]
+      interval: 5s
     tty: true
   app:
     build:
