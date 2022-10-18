@@ -8,7 +8,7 @@ on:
 env:
   GO_VERSION: 1.19.2
 jobs:
-  test:
+  test_and_release:
     name: Unit Test and Coverage Test
     runs-on: ubuntu-latest
     steps:
@@ -31,6 +31,12 @@ jobs:
         path: |
           ./coverage.out
           ./coverage.html
+    - name: Build and Release Go App
+      uses: ncipollo/release-action@v1
+      run: go build -o main.app .
+      with:
+        artifacts: main.app
+
   deploy:
     name: Deploy to Registry
     needs: test
@@ -52,9 +58,4 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend-ku:${{ github.ref_name }}
-      - name: Check Folder
-        run: ls
-      - name: Build and Release Action
-        uses: ncipollo/release-action@v1
-        with:
-          artifacts: "./main.app"
+      
