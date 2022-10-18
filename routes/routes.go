@@ -7,11 +7,15 @@ import (
 	r "day-13-orm/repositories"
 	s "day-13-orm/services"
 	"log"
+	"net/http"
 	"os"
+	"time"
 
 	"github.com/joho/godotenv"
+	"github.com/labstack/echo-contrib/jaegertracing"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
+	"github.com/opentracing/opentracing-go"
 )
 
 var (
@@ -22,7 +26,7 @@ var (
 	userR = r.NewUserRepository(DB)
 	userS = s.NewUserService(userR)
 	userC = c.NewUserController(userS, JWT)
-	
+
 	bookR = r.NewBookRepository(DB)
 	bookS = s.NewBookService(bookR)
 	bookC = c.NewBookController(bookS)
@@ -35,8 +39,21 @@ func New() *echo.Echo {
 	}
 
 	e := echo.New()
-	
+
 	m.LoggerMiddleware(e)
+	c := jaegertracing.New(e, nil)
+	jaegertracing.TraceWithConfig(jaegertracing.TraceConfig{
+		ComponentName: "hahah",
+		LimitSize: 20,
+	})
+	defer c.Close()
+
+	e.GET("/", func(c echo.Context) error {
+		jaegertracing.TraceFunction(c, slowFunc, "Test String")
+		span, _ := opentracing.StartSpanFromContext(c.Request().Context(), "Handle /get_cities")
+		defer span.Finish()
+		return c.String(http.StatusOK, "Hello, World!")
+	})
 
 	auth := e.Group("")
 	auth.Use(middleware.JWT([]byte(os.Getenv("JWT_KEY"))))
@@ -53,4 +70,8 @@ func New() *echo.Echo {
 	auth.PUT("/books/:id", bookC.UpdateController)
 
 	return e
+}
+
+func slowFunc(s string) {
+	time.Sleep(200 * time.Millisecond)
 }
