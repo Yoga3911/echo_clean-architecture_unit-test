@@ -38,7 +38,7 @@ jobs:
 
   deploy:
     name: Deploy to Registry
-    needs: test
+    needs: test_and_release
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
