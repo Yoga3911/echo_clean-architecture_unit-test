@@ -11,12 +11,42 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: set up go ${{env.GO_VERSION}}
-      uses: actions/setup-go@v3 # v2 automatically adds GOBIN to PATH
+      uses: actions/setup-go@v3
       with:
         go-version: ${{env.GO_VERSION}}
     - name: Check out code into the Go module directory
-      uses: actions/checkout@v1
-      with:
-        fetch-depth: 1
+      uses: actions/checkout@v3
     - name: Run tests
       run: go test -v ./...
+    - name: Check code coverage
+      run: |
+        go test -coverprofile=coverage.out ./...
+        go tool cover -html=coverage.out -o coverage.html
+    - name: Add coverage.out to artifacts
+      uses: actions/upload-artifact@v3
+      with:
+        name: coverage-zip
+        path: |
+          ./coverage.out
+          ./coverage.html
+  deploy:
+    name: Deploy to Registry
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          passowrd: ${{ secrets.DOCKER_HUB_TOKEN }}
+      - name: Setup Docker Build
+        uses: docker/setup-buildx-action@v2
+      - name: Build and Push
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend-ku:v1.1.3
