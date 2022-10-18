@@ -4,10 +4,9 @@ on:
     branches:
       - master
     tags:
-      - ${{ env.TAGS }}
+      - "*"
 env:
   GO_VERSION: 1.19.2
-  TAGS: v1.1.4
 jobs:
   test:
     name: Unit Test and Coverage Test
@@ -52,4 +51,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend-ku:${{ env.TAGS }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend-ku:${{ github.ref_name }}
