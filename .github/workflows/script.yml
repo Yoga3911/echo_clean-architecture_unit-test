@@ -4,14 +4,14 @@ on:
     branches:
       - master
 env:
-  GO_VERSION: 1.19
+  GO_VERSION: 1.19.2
 jobs:
   test:
     name: checks
     runs-on: ubuntu-latest
     steps:
     - name: set up go ${{env.GO_VERSION}}
-      uses: actions/setup-go@v2 # v2 automatically adds GOBIN to PATH
+      uses: actions/setup-go@v3 # v2 automatically adds GOBIN to PATH
       with:
         go-version: ${{env.GO_VERSION}}
     - name: Check out code into the Go module directory
@@ -26,12 +26,9 @@ jobs:
         cat coverage.tmp.out | grep -v _mock.go > coverage.out
         go tool cover -html=coverage.out -o coverage.html
     - name: Add coverage.out to artifacts
-      uses: actions/upload-artifact@v1
+      uses: actions/upload-artifact@v3
       with:
         name: coverage-out
-        path: ./coverage.out
-    - name: Add coverage.html to artifacts
-      uses: actions/upload-artifact@v1
-      with:
-        name: coverage-html
-        path: ./coverage.html
+        path: |
+          ./coverage.out
+          ./coverage.html
