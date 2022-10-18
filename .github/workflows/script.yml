@@ -52,6 +52,8 @@ jobs:
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend-ku:${{ github.ref_name }}
+      - name: Check Folder
+        run: ls
       - name: Build and Release Action
         uses: ncipollo/release-action@v1
         with:
