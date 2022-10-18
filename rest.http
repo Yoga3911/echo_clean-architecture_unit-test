@@ -1,13 +1,15 @@
 ### GET ALL USERS
-GET http://165.22.242.131:8003/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU5ODY2MDUsImlkIjoyLCJpc3MiOiJxd2VydHkiLCJuYW1lIjoiTWFtYXQxMjMifQ.rsSoEQRmBWv_hRm3J7AoA3_73STWY24R8FpHLlSKB4c
+GET http://localhost:8000/
+### GET ALL USERS
+GET http://coco.go-rest-api.live/users
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU5ODk5MjAsImlkIjo3LCJpc3MiOiJxd2VydHkiLCJuYW1lIjoiTWFtYXQxMjMifQ.N5uZ8kEXutVV991vY6DULSEEtq-jG9dEGhqIvUPsDsk
 
 ### GET USER
 GET http://localhost:8000/users/23
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
 
 ### INSERT USER
-POST http://165.22.242.131:8003/users
+POST http://coco.go-rest-api.live/users
 Content-Type: application/json
 
 {
