@@ -7,7 +7,7 @@ on:
       - "*"
 env:
   GO_VERSION: 1.19.2
-  TAG: v1.1.15
+  
 jobs:
   test:
     name: Unit and Coverage Test
