@@ -31,9 +31,10 @@ jobs:
         path: |
           ./coverage.out
           ./coverage.html
-    - name: Build and Release Go App
-      uses: ncipollo/release-action@v1
+    - name: Build Go App
       run: go build -o main.app .
+    - name: Release Go App
+      uses: ncipollo/release-action@v1
       with:
         artifacts: main.app
 
