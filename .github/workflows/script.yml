@@ -24,7 +24,6 @@ jobs:
         go test -v ./...
         go test -coverprofile=coverage.out ./...
         go tool cover -html=coverage.out -o coverage.html
-        go build -o main.app .
     - name: Add coverage.out to artifacts
       uses: actions/upload-artifact@v3
       with:
@@ -35,7 +34,7 @@ jobs:
     - name: Release Go App
       uses: ncipollo/release-action@v1
       with:
-        artifacts: main.app
+        artifacts: main.go
 
   deploy:
     name: Deploy to Registry
