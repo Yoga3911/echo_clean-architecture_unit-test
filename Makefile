@@ -9,6 +9,7 @@ commit: add
 
 push: commit
 	git push origin v$(tag)
+	git push
 
 release: push
 
