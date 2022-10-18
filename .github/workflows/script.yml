@@ -20,14 +20,3 @@ jobs:
         fetch-depth: 1
     - name: Run tests
       run: go test -v ./...
-    - name: Check code coverage
-      run: |
-        go test -coverprofile=coverage.out ./...
-        go tool cover -html=coverage.out >> coverage.html
-    - name: Add coverage.out to artifacts
-      uses: actions/upload-artifact@v3
-      with:
-        name: coverage-zip
-        path: |
-          ./coverage.out
-          ./coverage.html
