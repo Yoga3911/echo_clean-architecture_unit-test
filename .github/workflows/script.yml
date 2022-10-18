@@ -1,13 +1,13 @@
 name: ci-cd
-env:
-  GO_VERSION: 1.19.2
-  TAGS: v1.1.4
 on: 
   push:
     branches:
       - master
     tags:
       - ${{ env.TAGS }}
+env:
+  GO_VERSION: 1.19.2
+  TAGS: v1.1.4
 jobs:
   test:
     name: Unit Test and Coverage Test
