@@ -22,13 +22,12 @@ jobs:
       run: go test -v ./...
     - name: Check code coverage
       run: |
-        go test -coverprofile=coverage.tmp.out ./...
-        cat coverage.tmp.out | grep -v _mock.go > coverage.out
-        go tool cover -html=coverage.out -o coverage.html
+        go test -coverprofile=coverage.out ./...
+        go tool cover -html=coverage.out >> coverage.html
     - name: Add coverage.out to artifacts
       uses: actions/upload-artifact@v3
       with:
-        name: coverage-out
+        name: coverage-zip
         path: |
           ./coverage.out
           ./coverage.html
