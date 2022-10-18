@@ -1,13 +1,16 @@
 name: ci-cd
+env:
+  GO_VERSION: 1.19.2
+  TAGS: v1.1.4
 on: 
   push:
     branches:
       - master
-env:
-  GO_VERSION: 1.19.2
+    tags:
+      - ${{ env.TAGS }}
 jobs:
   test:
-    name: checks
+    name: Unit Test and Coverage Test
     runs-on: ubuntu-latest
     steps:
     - name: set up go ${{env.GO_VERSION}}
@@ -49,4 +52,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend-ku:v1.1.3
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/backend-ku:${{ env.TAGS }}
