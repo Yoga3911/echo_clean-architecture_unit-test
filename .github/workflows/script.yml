@@ -34,6 +34,8 @@ jobs:
     - name: Release Go App
       uses: ncipollo/release-action@v1
       with:
+        tag: ${{ github.ref_name }}
+        commit: ${{ github.event.head_commit.message }}
         artifacts: main.app
 
   deploy:
