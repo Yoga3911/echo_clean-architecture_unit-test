@@ -12,4 +12,7 @@ push: tag
 
 release: push
 
+del_tag:
+	git tag -d v$(t)
+
 .PHONY: tag, add, commit, push, release 
