@@ -62,7 +62,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ APP_NAME }}:${{ github.ref_name }}
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:${{ github.ref_name }}
       - name: Update Docker Image in Cloud
         uses: appleboy/ssh-action@master
         with:
@@ -71,10 +71,10 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           port: ${{ secrets.PORT }}
           script: |
-            docker stop ${{ APP_NAME }}
-            docker container rm ${{ APP_NAME }}
-            docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/${{ APP_NAME }}
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ APP_NAME }}:${{ github.ref_name }}
-            docker run --name ${{ APP_NAME }} -v $PWD/.env:/.env -p ${{ APP_PORT }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ APP_NAME }}:${{ github.ref_name }}
+            docker stop ${{ env.APP_NAME }}
+            docker container rm ${{ env.APP_NAME }}
+            docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:${{ github.ref_name }}
+            docker run --name ${{ env.APP_NAME }} -v $PWD/.env:/.env -p ${{ env.APP_PORT }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:${{ github.ref_name }}
 
       
