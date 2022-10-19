@@ -2,7 +2,7 @@
 GET http://localhost:8000/
 ### GET ALL USERS
 GET http://coco.go-rest-api.live/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjYwODQ2MTcsImlkIjoxNCwiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.h1T_i8I2nUNVrC5FX_R5uMt8GkKASCvSIeQQ3wVCyc8
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjYxODA2NDQsImlkIjoxOSwiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.O8qxwXEU2uM9y3JYW1IDFPU2pLxLdoKTDymBvYvwwCc
 
 ### GET USER
 GET https://localhost:8000/users/23
