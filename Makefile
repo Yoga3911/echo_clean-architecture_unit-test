@@ -7,7 +7,7 @@ add:
 commit: add
 	git commit -m "$(m)"
 
-push: commit
+push: tag
 	git push origin v$(t)
 
 release: push
