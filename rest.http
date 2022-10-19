@@ -2,10 +2,10 @@
 GET http://localhost:8000/
 ### GET ALL USERS
 GET http://coco.go-rest-api.live/users
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjU5ODk5MjAsImlkIjo3LCJpc3MiOiJxd2VydHkiLCJuYW1lIjoiTWFtYXQxMjMifQ.N5uZ8kEXutVV991vY6DULSEEtq-jG9dEGhqIvUPsDsk
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjYwODQ2MTcsImlkIjoxNCwiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.h1T_i8I2nUNVrC5FX_R5uMt8GkKASCvSIeQQ3wVCyc8
 
 ### GET USER
-GET http://localhost:8000/users/23
+GET https://localhost:8000/users/23
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
 
 ### INSERT USER
