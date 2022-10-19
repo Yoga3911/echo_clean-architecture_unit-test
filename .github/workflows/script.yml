@@ -73,7 +73,6 @@ jobs:
           script: |
             docker stop ${{ env.APP_NAME }}
             docker container rm ${{ env.APP_NAME }}
-            docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:${{ github.ref_name }}
             docker run --name ${{ env.APP_NAME }} -v $PWD/.env:/.env -p ${{ env.APP_PORT }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:${{ github.ref_name }}
 
