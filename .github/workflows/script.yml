@@ -10,7 +10,7 @@ env:
   
 jobs:
   test:
-    name: Unit and Coverage Test
+    name: Linter, Unit and Coverage Test
     runs-on: ubuntu-latest
     steps:
     - name: set up go ${{env.GO_VERSION}}
@@ -19,8 +19,11 @@ jobs:
         go-version: ${{env.GO_VERSION}}
     - name: Check out code into the Go module directory
       uses: actions/checkout@v3
+    - name: Install golangci-lint for linter test
+      run: curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.50.0
     - name: Run Test and Build App
       run: |
+        golangci-lint run ./...
         go test -v ./...
         go test -coverprofile=coverage.out ./...
         go tool cover -html=coverage.out -o coverage.html
