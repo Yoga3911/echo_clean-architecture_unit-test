@@ -40,7 +40,7 @@ jobs:
         artifacts: main.go
 
   deploy:
-    name: Deploy to Docker Registry
+    name: Deploy Image to Docker Registry
     needs: test
     runs-on: ubuntu-latest
     steps:
