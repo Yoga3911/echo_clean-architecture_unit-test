@@ -66,6 +66,9 @@ func InitialMigration(db *gorm.DB) {
 	if err != nil {
 		log.Panicln(err)
 	}
-
-	db.AutoMigrate(&models.Book{})
+	
+	err = db.AutoMigrate(&models.Book{})
+	if err != nil {
+		log.Panicln(err)
+	}
 }
