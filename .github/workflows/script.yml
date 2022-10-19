@@ -56,13 +56,20 @@ jobs:
           password: ${{ secrets.DOCKER_HUB_TOKEN }}
       - name: Setup Docker Build
         uses: docker/setup-buildx-action@v2
-      - name: Build and Push to Docker Hub
+      - name: Build and Push to Docker Hub (Tag)
         uses: docker/build-push-action@v3
         with:
           context: .
           file: ./Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:${{ github.ref_name }}
+      - name: Build and Push to Docker Hub (Latest)
+        uses: docker/build-push-action@v3
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:latest
       - name: Update Docker Image in Cloud
         uses: appleboy/ssh-action@master
         with:
@@ -73,7 +80,8 @@ jobs:
           script: |
             docker stop ${{ env.APP_NAME }}
             docker container rm ${{ env.APP_NAME }}
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:${{ github.ref_name }}
-            docker run --name ${{ env.APP_NAME }} -v $PWD/.env:/.env -p ${{ env.APP_PORT }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:${{ github.ref_name }}
+            docker image rm ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:latest
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:latest
+            docker run --name ${{ env.APP_NAME }} -v $PWD/.env:/.env -p ${{ env.APP_PORT }} ${{ secrets.DOCKER_HUB_USERNAME }}/${{ env.APP_NAME }}:latest
 
       

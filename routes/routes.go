@@ -41,12 +41,6 @@ func New() *echo.Echo {
 	e := echo.New()
 
 	m.LoggerMiddleware(e)
-	c := jaegertracing.New(e, nil)
-	jaegertracing.TraceWithConfig(jaegertracing.TraceConfig{
-		ComponentName: "hahah",
-		LimitSize: 20,
-	})
-	defer c.Close()
 
 	e.GET("/", func(c echo.Context) error {
 		jaegertracing.TraceFunction(c, slowFunc, "Test String")
