@@ -34,15 +34,15 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5N
 }
 
 ### GET ALL BOOKS
-GET http://localhost:8000/books
+GET http://coco.go-rest-api.live/books
 
 ### GET BOOK
-GET http://localhost:8000/books/8
+GET http://coco.go-rest-api.live/books/8
 
 ### INSERT BOOK
-POST http://localhost:8000/books
+POST http://coco.go-rest-api.live/books
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjQ3MTI5NzksImlkIjozNywiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.k2p0-PNBPcdbz9eb2JM7tbXbJYiqapmj85E6B_0IkNI
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE2NjYxOTYwMjcsImlkIjoyMSwiaXNzIjoicXdlcnR5IiwibmFtZSI6Ik1hbWF0MTIzIn0.0sj_oACZ-PHz0CDd8FX3qzzn9j3W6Qp7FOiIwyoLc0o
 
 {
     "title": "Bat Man 123",

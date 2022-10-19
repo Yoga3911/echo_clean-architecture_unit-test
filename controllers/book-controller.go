@@ -41,7 +41,7 @@ func (b *bookController) GetBooksController(c echo.Context) error {
 
 	return h.Response(c, http.StatusOK, h.ResponseModel{
 		Data:    Books,
-		Message: "Get all Books success",
+		Message: "Get all Books success updated",
 		Status:  true,
 	})
 }
