@@ -1,7 +1,7 @@
-tag:
+tag: commit
 	git tag -a v$(t) -m "$(m)"
 
-add: tag
+add: 
 	git add .
 
 commit: add
