@@ -1,5 +1,5 @@
 # GO IMAGE
-FROM golang:1.19.2-alpine3.16
+FROM golang:1.19.8-alpine3.16
 
 WORKDIR /app
 
